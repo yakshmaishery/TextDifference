@@ -1,0 +1,7 @@
+#navdiv{
+   position: fixed;
+   bottom: 10px;
+   right: 20px;
+   display: flex;
+   flex-direction: column;
+}
