@@ -23,6 +23,7 @@
       "html",
       "css",
       "json",
+      "sql"
    ];
    const themes = ["vs-dark", "vs-light", "hc-black"];
 
