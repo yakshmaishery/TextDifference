@@ -135,12 +135,6 @@
       editor1?.dispose();
       editor2?.dispose();
       diffEditor?.dispose();
-      // It's also good practice to dispose of any models created *outside* an editor
-      // if they are not explicitly set to `null` or re-assigned.
-      // For models created by `createModel` for the diff editor, they are often disposed
-      // when a new model is set or the diff editor is disposed.
-      // However, if you have other floating models, this can be useful:
-      // monaco.editor.getModels().forEach(model => model.dispose());
    });
 
    function updateTheme() {
@@ -160,35 +154,18 @@
             selectedLanguage === "none" ? "plaintext" : selectedLanguage,
          );
       }
-      // For the diff editor, if it exists, you might want to re-run compareTexts
-      // to update the language of its models, as `setModelLanguage` doesn't apply
-      // to diff editor's internal models. Or, dispose and recreate.
-      // For simplicity, we'll assume a language change prompts a re-compare.
-      if (diffEditor) {
-         // Option 1: Re-run compareTexts to update diff editor's language
-         // compareTexts(); // This will recreate models with new language
-         // Option 2: If just changing the UI language for syntax, but content is same.
-         // The language of diff editor models is set during their creation.
-         // You generally recreate the models for a language change.
-      }
    }
 
    function compareTexts() {
       const originalCode = editor1?.getValue() || "";
       const modifiedCode = editor2?.getValue() || "";
 
-      // IMPORTANT: Safely dispose of previous models BEFORE creating new ones
-      // and BEFORE setting them on the diff editor.
       if (diffEditor) {
          const oldModels = diffEditor.getModel();
          if (oldModels) {
             oldModels.original.dispose();
             oldModels.modified.dispose();
          }
-         // If you don't dispose the diff editor, just set new models
-         // We are choosing to recreate it each time for simplicity in this example,
-         // but if you want to keep the diffEditor instance, uncomment the dispose above
-         // and just call setModel below.
          diffEditor.dispose(); // Dispose the existing diff editor instance
          diffEditor = null; // Clear the reference
       }
@@ -206,10 +183,7 @@
       // Create a new diff editor instance
       diffEditor = monaco.editor.createDiffEditor(diffEditorEl, {
          theme: selectedTheme,
-         renderSideBySide: true,
-         // Optional: Add options for the diff editor itself
-         // enableSplitViewResizing: true,
-         // ignoreTrimWhitespace: true,
+         renderSideBySide: true
       });
 
       // Set the new models
@@ -232,15 +206,54 @@
 
       // Safely dispose the diff editor and its models
       if (diffEditor) {
-         const oldModels = diffEditor.getModel();
-         if (oldModels) {
-            // Dispose of the models first
-            // oldModels.original.dispose();
-            // oldModels.modified.dispose();
-         }
          // Then dispose of the diff editor instance
          diffEditor.dispose();
          diffEditor = null; // Clear the reference so it can be recreated
+      }
+      let file1:any = document.getElementById("file1")
+      if(file1){
+         file1.value = ""
+      }
+      let file2:any = document.getElementById("file2")
+      if(file2){
+         file2.value = ""
+      }
+   }
+   const filechange = async (e:any,field:string) =>{
+      console.warn(e.target.files)
+      if(e){
+         if(e.target){
+            if(e.target.files){
+               if(e.target.files.length>0){
+                  // if(field == "1"){
+                     const file = e.target.files[0];
+                     if (file) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e1:any) {
+                           const content = e1.target.result;
+                           if(field == "1"){
+                              if (editor1) {
+                                 editor1.setValue(content);
+                              }
+                           }
+                           if(field == "2"){
+                              if (editor2) {
+                                 editor2.setValue(content);
+                              }
+                           }
+                        };
+
+                        reader.onerror = function(e) {
+                           console.error('Error reading file:', e);
+                        };
+
+                        reader.readAsText(file); // You can also use readAsDataURL, readAsArrayBuffer, etc.
+                     }
+                  // }
+               }
+            }
+         }
       }
    }
 </script>
@@ -283,23 +296,25 @@
       </div>
    </div>
 
+   <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+         <input type="file" id="file1" on:change={(e)=>{filechange(e,"1")}} class="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md" />
+      </div>
+      <div>
+         <input type="file" id="file2" on:change={(e)=>{filechange(e,"2")}} class="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md" />
+      </div>
+   </div>
    <div class="grid grid-cols-2 gap-4 mb-4" style="height: 300px;">
       <div bind:this={editor1El} class="border rounded min-w-0"></div>
       <div bind:this={editor2El} class="border rounded min-w-0"></div>
    </div>
 
    <div class="flex gap-4 mb-4">
-      <button
-         on:click={compareTexts}
-         class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
+      <button on:click={compareTexts} class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
          Compare
       </button>
 
-      <button
-         on:click={clearEditors}
-         class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-      >
+      <button on:click={clearEditors} class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
          Clear All
       </button>
    </div>
