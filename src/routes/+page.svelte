@@ -157,8 +157,8 @@
          const oldModels = diffEditor.getModel();
          if (oldModels) {
             // Dispose of the models first
-            oldModels.original.dispose();
-            oldModels.modified.dispose();
+            // oldModels.original.dispose();
+            // oldModels.modified.dispose();
          }
          // Then dispose of the diff editor instance
          diffEditor.dispose();
