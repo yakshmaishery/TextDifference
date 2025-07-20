@@ -24,6 +24,7 @@ A lightweight web application built with **SvelteKit** that compares two blocks 
 ---
 
 ## 📷 Screen Shot
-![image](https://github.com/user-attachments/assets/77cb1336-e6cb-48e0-a451-75df9d1d5db1)
-![image](https://github.com/user-attachments/assets/136cf93f-f70e-4393-9e6b-0e5282e881bf)
+<img width="1366" height="602" alt="image" src="https://github.com/user-attachments/assets/43429903-fee9-4e3f-ac3f-08f00fab4e1a" />
+<img width="1364" height="597" alt="image" src="https://github.com/user-attachments/assets/acd37f4c-2730-40e3-9905-fccdff7f230f" />
+<img width="1366" height="613" alt="image" src="https://github.com/user-attachments/assets/843c0334-39bd-470b-95ea-71d769f46b4f" />
 
