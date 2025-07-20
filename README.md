@@ -1,6 +1,6 @@
 # 📝 Text Difference App
 
-A lightweight web application built with **SvelteKit** that compares two blocks of text and visually highlights their differences using the [diff](https://www.npmjs.com/package/diff) library.
+A lightweight web application built with **SvelteKit** that compares two blocks of text and visually highlights their differences using the [monaco-editor](https://microsoft.github.io/monaco-editor/) library.
 
 ---
 
@@ -17,7 +17,7 @@ A lightweight web application built with **SvelteKit** that compares two blocks 
 ## 🛠️ Tech Stack
 
 - [SvelteKit](https://kit.svelte.dev/) – Web framework
-- [diff](https://www.npmjs.com/package/diff) – Text diffing library
+- [monaco-editor](https://microsoft.github.io/monaco-editor/) – monaco-editor library
 - [ShadCN](https://www.shadcn-svelte.com/) – UI Components and Styling
 - TypeScript – Type safety
 
