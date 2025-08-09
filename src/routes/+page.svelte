@@ -4,6 +4,8 @@
    import { onMount, onDestroy } from "svelte";
    import "$lib/monaco";
    import * as monaco from "monaco-editor";
+   import { Checkbox } from "$lib/components/ui/checkbox/index.js";
+   import { Label } from "$lib/components/ui/label/index.js";
 
    let editor1El: HTMLDivElement;
    let editor2El: HTMLDivElement;
@@ -105,6 +107,8 @@
 
       const themes = ["vs-dark", "vs-light", "hc-black", "hc-light"];
 
+   let wordWrap = false
+
    onMount(async () => {
       editor1 = monaco.editor.create(editor1El, {
          value: "",
@@ -180,11 +184,22 @@
          selectedLanguage === "none" ? "plaintext" : selectedLanguage,
       );
 
-      // Create a new diff editor instance
-      diffEditor = monaco.editor.createDiffEditor(diffEditorEl, {
-         theme: selectedTheme,
-         renderSideBySide: true
-      });
+      if(wordWrap == false){
+         // Create a new diff editor instance
+         diffEditor = monaco.editor.createDiffEditor(diffEditorEl, {
+            theme: selectedTheme,
+            renderSideBySide: true,
+            wordWrap:"off"
+         });
+      }
+      else{
+         // Create a new diff editor instance
+         diffEditor = monaco.editor.createDiffEditor(diffEditorEl, {
+            theme: selectedTheme,
+            renderSideBySide: true,
+            wordWrap:"on"
+         });
+      }
 
       // Set the new models
       diffEditor.setModel({
@@ -317,6 +332,19 @@
       <button on:click={clearEditors} class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
          Clear All
       </button>
+   </div>
+   <div style="width: fit-content;">
+         <Label class="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+            <Checkbox
+            checked={wordWrap}
+            onCheckedChange={()=>{wordWrap = !wordWrap}}
+               id="toggle-2"
+               class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+            />
+            <div class="grid font-normal">
+               <p class="text-sm font-medium leading-none">Word Wrap</p>
+            </div>
+         </Label>
    </div>
 
    <div
