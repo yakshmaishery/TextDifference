@@ -6,6 +6,7 @@
    import * as monaco from "monaco-editor";
    import { Checkbox } from "$lib/components/ui/checkbox/index.js";
    import { Label } from "$lib/components/ui/label/index.js";
+   import Searchdropdown from "../Common/Searchdropdown.svelte";
 
    let editor1El: HTMLDivElement;
    let editor2El: HTMLDivElement;
@@ -17,95 +18,95 @@
 
    let selectedLanguage = "none";
    let selectedTheme = "vs-dark";
+   let listdata:{value:string,label:string}[] = []
+   listdata = [
+      {value:"none",label:"none"},
+      {value:"abap",label:"abap"},
+      {value:"apex",label:"apex"},
+      {value:"azcli",label:"azcli"},
+      {value:"bat",label:"bat"},
+      {value:"bicep",label:"bicep"},
+      {value:"cameligo",label:"cameligo"},
+      {value:"clojure",label:"clojure"},
+      {value:"coffeescript",label:"coffeescript"},
+      {value:"c",label:"c"},
+      {value:"cpp",label:"cpp"},
+      {value:"csharp",label:"csharp"},
+      {value:"csp",label:"csp"},
+      {value:"css",label:"css"},
+      {value:"cypher",label:"cypher"},
+      {value:"dart",label:"dart"},
+      {value:"dockerfile",label:"dockerfile"},
+      {value:"ecl",label:"ecl"},
+      {value:"elixir",label:"elixir"},
+      {value:"flow9",label:"flow9"},
+      {value:"fsharp",label:"fsharp"},
+      {value:"freemarker2",label:"freemarker2"},
+      {value:"go",label:"go"},
+      {value:"graphql",label:"graphql"},
+      {value:"handlebars",label:"handlebars"},
+      {value:"hcl",label:"hcl"},
+      {value:"html",label:"html"},
+      {value:"ini",label:"ini"},
+      {value:"java",label:"java"},
+      {value:"javascript",label:"javascript"},
+      {value:"julia",label:"julia"},
+      {value:"kotlin",label:"kotlin"},
+      {value:"less",label:"less"},
+      {value:"lexon",label:"lexon"},
+      {value:"lua",label:"lua"},
+      {value:"liquid",label:"liquid"},
+      {value:"m3",label:"m3"},
+      {value:"markdown",label:"markdown"},
+      {value:"mdx",label:"mdx"},
+      {value:"mips",label:"mips"},
+      {value:"msdax",label:"msdax"},
+      {value:"mysql",label:"mysql"},
+      {value:"objective-c",label:"objective-c"},
+      {value:"pascal",label:"pascal"},
+      {value:"pascaligo",label:"pascaligo"},
+      {value:"perl",label:"perl"},
+      {value:"pgsql",label:"pgsql"},
+      {value:"php",label:"php"},
+      {value:"pla",label:"pla"},
+      {value:"postiats",label:"postiats"},
+      {value:"powerquery",label:"powerquery"},
+      {value:"powershell",label:"powershell"},
+      {value:"protobuf",label:"protobuf"},
+      {value:"pug",label:"pug"},
+      {value:"python",label:"python"},
+      {value:"qsharp",label:"qsharp"},
+      {value:"r",label:"r"},
+      {value:"razor",label:"razor"},
+      {value:"redis",label:"redis"},
+      {value:"redshift",label:"redshift"},
+      {value:"restructuredtext",label:"restructuredtext"},
+      {value:"ruby",label:"ruby"},
+      {value:"rust",label:"rust"},
+      {value:"sb",label:"sb"},
+      {value:"scala",label:"scala"},
+      {value:"scheme",label:"scheme"},
+      {value:"scss",label:"scss"},
+      {value:"shell",label:"shell"},
+      {value:"sol",label:"sol"},
+      {value:"sophia",label:"sophia"},
+      {value:"sparql",label:"sparql"},
+      {value:"sql",label:"sql"},
+      {value:"st",label:"st"},
+      {value:"swift",label:"swift"},
+      {value:"systemverilog",label:"systemverilog"},
+      {value:"tcl",label:"tcl"},
+      {value:"twig",label:"twig"},
+      {value:"typescript",label:"typescript"},
+      {value:"typespec",label:"typespec"},
+      {value:"vb",label:"vb"},
+      {value:"wgsl",label:"wgsl"},
+      {value:"xml",label:"xml"},
+      {value:"yaml",label:"yaml"},
+      {value:"json",label:"json"}
+   ]
 
-   const languages = [
-      "none",
-      "abap",
-      "apex",
-      "azcli",
-      "bat",
-      "bicep",
-      "cameligo",
-      "clojure",
-      "coffeescript",
-      "c",
-      "cpp",
-      "csharp",
-      "csp",
-      "css",
-      "cypher",
-      "dart",
-      "dockerfile",
-      "ecl",
-      "elixir",
-      "flow9",
-      "fsharp",
-      "freemarker2",
-      "go",
-      "graphql",
-      "handlebars",
-      "hcl",
-      "html",
-      "ini",
-      "java",
-      "javascript",
-      "julia",
-      "kotlin",
-      "less",
-      "lexon",
-      "lua",
-      "liquid",
-      "m3",
-      "markdown",
-      "mdx",
-      "mips",
-      "msdax",
-      "mysql",
-      "objective-c",
-      "pascal",
-      "pascaligo",
-      "perl",
-      "pgsql",
-      "php",
-      "pla",
-      "postiats",
-      "powerquery",
-      "powershell",
-      "protobuf",
-      "pug",
-      "python",
-      "qsharp",
-      "r",
-      "razor",
-      "redis",
-      "redshift",
-      "restructuredtext",
-      "ruby",
-      "rust",
-      "sb",
-      "scala",
-      "scheme",
-      "scss",
-      "shell",
-      "sol",
-      "sophia",
-      "sparql",
-      "sql",
-      "st",
-      "swift",
-      "systemverilog",
-      "tcl",
-      "twig",
-      "typescript",
-      "typespec",
-      "vb",
-      "wgsl",
-      "xml",
-      "yaml",
-      "json"
-      ];
-
-      const themes = ["vs-dark", "vs-light", "hc-black", "hc-light"];
+   const themes = ["vs-dark", "vs-light", "hc-black", "hc-light"];
 
    let wordWrap = false
 
@@ -277,22 +278,7 @@
 <div class="m-4">
    <div class="flex items-center gap-4 mb-4">
       <div>
-         <Select.Root
-            type="single"
-            bind:value={selectedLanguage}
-            onValueChange={updateLanguage}
-         >
-            <Select.Trigger class="w-[180px]"
-               >{selectedLanguage === "none"
-                  ? "Select Language"
-                  : selectedLanguage}</Select.Trigger
-            >
-            <Select.Content>
-               {#each languages as lang}
-                  <Select.Item value={lang}>{lang}</Select.Item>
-               {/each}
-            </Select.Content>
-         </Select.Root>
+         <Searchdropdown listdata={listdata} bind:selectedValue={selectedLanguage} on:updateLanguage={updateLanguage}/>
       </div>
 
       <div>
@@ -334,7 +320,7 @@
       </button>
    </div>
    <div style="width: fit-content;">
-         <Label class="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+         <Label class="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950" style="height:45px">
             <Checkbox
             checked={wordWrap}
             onCheckedChange={()=>{wordWrap = !wordWrap}}
