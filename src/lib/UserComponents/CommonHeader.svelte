@@ -5,8 +5,9 @@
    import { Button } from "$lib/components/ui/button/index.js";
 </script>
 <nav class="border-b shadow-sm px-4 py-3 flex justify-between items-center">
-  <div class="text-xl font-semibold">Text Difference</div>
+  <div class="text-xl font-semibold"><a href="/">Text Difference</a></div>
   <div class="divlinks">
+      <a href="/Formatter">Formatter</a>
       <a href="https://github.com/yakshmaishery/TextDifference" target="_blank">Github</a>
      <Button onclick={toggleMode} variant="outline" size="icon" style="cursor:pointer">
          <SunIcon class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 !transition-all dark:-rotate-90 dark:scale-0"/>
