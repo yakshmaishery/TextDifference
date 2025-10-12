@@ -45,10 +45,58 @@
    function updateTheme() {
       monaco.editor.setTheme(selectedTheme);
    }
+   const filechange = async (e:any) =>{
+      if(e){
+         if(e.target){
+            if(e.target.files){
+               if(e.target.files.length>0){
+                  // if(field == "1"){
+                     const file = e.target.files[0];
+                     if (file) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e1:any) {
+                           const content = e1.target.result;
+                              if (editor1) {
+                                 editor1.setValue(content);
+                              }
+                        };
+
+                        reader.onerror = function(e) {
+                           console.error('Error reading file:', e);
+                        };
+
+                        reader.readAsText(file); // You can also use readAsDataURL, readAsArrayBuffer, etc.
+                     }
+                  // }
+               }
+            }
+         }
+      }
+   }
+
+   // --- Clear Function ---
+   function clearEditors() {
+      if (editor1) {
+         editor1.setValue("");
+      }
+      let file1:any = document.getElementById("file1")
+      if(file1){
+         file1.value = ""
+      }
+   }
 </script>
 <CommonHeader />
 <div class="m-4">
    <div class="flex items-center gap-4 mb-4">
+      <div>
+         <input type="file" id="file1" on:change={(e)=>{filechange(e)}} class="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md" />
+      </div>
+      <div>
+         <button on:click={clearEditors} class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+            Clear All
+         </button>
+      </div>
       <div>
          <Searchdropdown listdata={listdata} bind:selectedValue={selectedLanguage} on:updateLanguage={updateLanguage}/>
       </div>
