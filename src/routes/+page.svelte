@@ -23,6 +23,7 @@
    const themes = ["vs-dark", "vs-light", "hc-black", "hc-light"];
 
    let wordWrap = false
+   let DisableError = false
 
    onMount(async () => {
       editor1 = monaco.editor.create(editor1El, {
@@ -186,6 +187,15 @@
          }
       }
    }
+
+   const disableErrorsfunc = () => {
+      DisableError = !DisableError
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+         noSemanticValidation: DisableError,
+         noSyntaxValidation: DisableError,
+      });
+      updateLanguage()
+   }
 </script>
 
 <CommonHeader />
@@ -232,8 +242,32 @@
       <button on:click={clearEditors} class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
          Clear All
       </button>
+
+      <Label class="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950" style="height:45px">
+            <Checkbox
+            checked={wordWrap}
+            onCheckedChange={()=>{wordWrap = !wordWrap}}
+               id="toggle-2"
+               class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+            />
+            <div class="grid font-normal">
+               <p class="text-sm font-medium leading-none">Word Wrap</p>
+            </div>
+         </Label>
+
+         <Label class="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950" style="height:45px">
+            <Checkbox
+            checked={DisableError}
+            onCheckedChange={()=>{disableErrorsfunc()}}
+               id="toggle-2"
+               class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+            />
+            <div class="grid font-normal">
+               <p class="text-sm font-medium leading-none">Disable Error</p>
+            </div>
+         </Label>
    </div>
-   <div style="width: fit-content;">
+   <!-- <div style="width: fit-content;">
          <Label class="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950" style="height:45px">
             <Checkbox
             checked={wordWrap}
@@ -245,7 +279,7 @@
                <p class="text-sm font-medium leading-none">Word Wrap</p>
             </div>
          </Label>
-   </div>
+   </div> -->
 
    <div
       class="mt-4 border rounded"
