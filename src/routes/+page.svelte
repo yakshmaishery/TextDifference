@@ -30,12 +30,14 @@
          value: "",
          language: selectedLanguage === "none" ? undefined : selectedLanguage, // Use undefined for 'none'
          theme: selectedTheme,
+         stickyScroll: { enabled: false },
       });
 
       editor2 = monaco.editor.create(editor2El, {
          value: "",
          language: selectedLanguage === "none" ? undefined : selectedLanguage, // Use undefined for 'none'
          theme: selectedTheme,
+         stickyScroll: { enabled: false },
       });
 
       // Initial layout fix
@@ -105,7 +107,8 @@
          diffEditor = monaco.editor.createDiffEditor(diffEditorEl, {
             theme: selectedTheme,
             renderSideBySide: true,
-            wordWrap:"off"
+            wordWrap:"off",
+            stickyScroll: { enabled: false },
          });
       }
       else{
@@ -113,7 +116,8 @@
          diffEditor = monaco.editor.createDiffEditor(diffEditorEl, {
             theme: selectedTheme,
             renderSideBySide: true,
-            wordWrap:"on"
+            wordWrap:"on",
+            stickyScroll: { enabled: false },
          });
       }
 
