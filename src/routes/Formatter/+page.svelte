@@ -3,20 +3,16 @@
    import '$lib/monaco'
    import CommonHeader from "$lib/UserComponents/CommonHeader.svelte";
    import * as InputGroup from "$lib/components/ui/input-group/index.js";
-   // import CopyIcon from "@lucide/svelte/icons/copy";
-   // import CornerDownLeftIcon from "@lucide/svelte/icons/corner-down-left";
-   // import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
-   // import "$lib/Styles/VSEditorCSS.css";
    import { Label } from "$lib/components/ui/label/index.js";
    import { onMount, onDestroy } from "svelte";
    import * as Select from "$lib/components/ui/select/index.js";
    import * as monaco from "monaco-editor";
-   // import Searchdropdown from "./Searchdropdown.svelte";
    import { Upload,RefreshCwIcon,CornerDownLeftIcon,CopyIcon,Presentation } from "@lucide/svelte";
    import { listdata } from "$lib/Environment";
    import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
    import { Input } from "$lib/components/ui/input/index.js";
    import Searchdropdown from '../../Common/Searchdropdown.svelte';
+   import { toast } from "svelte-sonner";
    let selectedLanguage = "none";
    let cardhtml: HTMLDivElement;
    let editorWrapper: HTMLDivElement;
@@ -173,6 +169,7 @@
    const CopytoClipboard = () => {
       const textContent = editor1?.getValue() || "";
       navigator.clipboard.writeText(textContent)
+      toast.success("Copied successfully!")
    }
 
    function isBase64Image(base64:string) {
