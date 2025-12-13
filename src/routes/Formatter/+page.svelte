@@ -175,6 +175,17 @@
       navigator.clipboard.writeText(textContent)
    }
 
+   function isBase64Image(base64:string) {
+      if (!base64.startsWith("data:")) return false;
+
+      const mime = base64.substring(
+         base64.indexOf(":") + 1,
+         base64.indexOf(";")
+      );
+
+      return mime.startsWith("image/");
+   }
+
    const PreviewData = () => {
       const textContent = editor1?.getValue() || "";
       if(textContent){
@@ -184,15 +195,33 @@
          let newtab = window.open("","_blank")
          let htmlcode = ""
          if(selectedLanguage == "base64"){
-            htmlcode = `<html>
-               <embed src="${textContent}"/>
-            </html>`
+            // htmlcode = `<html>
+            //    <embed src="${textContent}" style="height:100%;width:100%"/>
+            // </html>`
+            if(isBase64Image(textContent)){
+               htmlcode = `<html>
+                  <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center">
+                     <embed src="${textContent}" style="max-height:100%;max-width:100%;height:100%;width:auto" />
+                  </div>
+               </html>`
+               newtab?.document.write(htmlcode)
+               newtab?.document.close()
+            }
+            else{
+               htmlcode = `<html>
+                  <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center">
+                     <embed src="${textContent}" style="max-height:100%;max-width:100%;height:100%;width:100%" />
+                  </div>
+               </html>`
+               newtab?.document.write(htmlcode)
+               newtab?.document.close()
+            }
          }
          else{
             htmlcode = textContent
+            newtab?.document.write(htmlcode)
+            newtab?.document.close()
          }
-         newtab?.document.write(htmlcode)
-         newtab?.document.close()
       }
    }
 </script>
