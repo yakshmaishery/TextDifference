@@ -164,6 +164,9 @@
          document.body.removeChild(a);
          URL.revokeObjectURL(url);
       }
+      else{
+         toast.info("There is no data!")
+      }
    }
 
    const CopytoClipboard = () => {
