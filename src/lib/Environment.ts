@@ -5,6 +5,7 @@ export let listdata:{value:string,label:string}[] = [
       {value:"azcli",label:"azcli"},
       {value:"bat",label:"bat"},
       {value:"bicep",label:"bicep"},
+      {value:"base64",label:"base64"},
       {value:"cameligo",label:"cameligo"},
       {value:"clojure",label:"clojure"},
       {value:"coffeescript",label:"coffeescript"},

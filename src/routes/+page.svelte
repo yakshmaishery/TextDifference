@@ -183,7 +183,12 @@
                            console.error('Error reading file:', e);
                         };
 
-                        reader.readAsText(file); // You can also use readAsDataURL, readAsArrayBuffer, etc.
+                        if(selectedLanguage == "base64"){
+                        reader.readAsDataURL(file);
+                        }
+                        else{
+                           reader.readAsText(file); // You can also use readAsDataURL, readAsArrayBuffer, etc.
+                        }
                      }
                   // }
                }

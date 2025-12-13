@@ -12,11 +12,11 @@
    import * as Select from "$lib/components/ui/select/index.js";
    import * as monaco from "monaco-editor";
    // import Searchdropdown from "./Searchdropdown.svelte";
-   import { Upload,RefreshCwIcon,CornerDownLeftIcon,CopyIcon } from "@lucide/svelte";
+   import { Upload,RefreshCwIcon,CornerDownLeftIcon,CopyIcon,Presentation } from "@lucide/svelte";
    import { listdata } from "$lib/Environment";
    import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
    import { Input } from "$lib/components/ui/input/index.js";
-    import Searchdropdown from '../../Common/Searchdropdown.svelte';
+   import Searchdropdown from '../../Common/Searchdropdown.svelte';
    let selectedLanguage = "none";
    let cardhtml: HTMLDivElement;
    let editorWrapper: HTMLDivElement;
@@ -28,6 +28,7 @@
    let cardhtmlWidth: number = 0;
    let downloadFileName:string = ""
    let downloadFileType:string = ""
+   let ShowPreviewList = ["base64","html"]
 
    $:if(selectedLanguage){updateLanguage()}
    $:if(wordWrap){
@@ -106,7 +107,7 @@
                   const file = e.target.files[0];
                   if (file) {
                      downloadFileName = file.name
-                     // downloadFileType = file.type
+                     downloadFileType = file.type
                      const reader = new FileReader();
 
                      reader.onload = function (e1: any) {
@@ -120,7 +121,12 @@
                         console.error("Error reading file:", e);
                      };
 
-                     reader.readAsText(file); // You can also use readAsDataURL, readAsArrayBuffer, etc.
+                     if(selectedLanguage == "base64"){
+                        reader.readAsDataURL(file);
+                     }
+                     else{
+                        reader.readAsText(file); // You can also use readAsDataURL, readAsArrayBuffer, etc.
+                     }
                   }
                   // }
                }
@@ -134,9 +140,9 @@
       if (editor1) {
          editor1.setValue("");
          downloadFileName = ""
-         selectedLanguage = listdata[0].value;
+         // selectedLanguage = listdata[0].value;
       }
-      let file1: any = document.getElementById("file1");
+      let file1: any = document.getElementById("editorfile");
       if (file1) {
          file1.value = "";
       }
@@ -161,6 +167,32 @@
          // Clean up
          document.body.removeChild(a);
          URL.revokeObjectURL(url);
+      }
+   }
+
+   const CopytoClipboard = () => {
+      const textContent = editor1?.getValue() || "";
+      navigator.clipboard.writeText(textContent)
+   }
+
+   const PreviewData = () => {
+      const textContent = editor1?.getValue() || "";
+      if(textContent){
+         // const blob = new Blob([textContent], { type: 'text/html' }); 
+         // const url = URL.createObjectURL(blob);
+         // window.open(url,"_blank")
+         let newtab = window.open("","_blank")
+         let htmlcode = ""
+         if(selectedLanguage == "base64"){
+            htmlcode = `<html>
+               <embed src="${textContent}"/>
+            </html>`
+         }
+         else{
+            htmlcode = textContent
+         }
+         newtab?.document.write(htmlcode)
+         newtab?.document.close()
       }
    }
 </script>
@@ -210,9 +242,19 @@
          <button
             class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shrink-0 justify-center whitespace-nowrap font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 flex items-center gap-2 text-sm shadow-none size-6 rounded-[calc(var(--radius)-5px)] p-0 has-[>svg]:p-0"
             style="cursor: pointer;"
+            on:click={CopytoClipboard}
          >
             <CopyIcon />
          </button>
+         {#if ShowPreviewList.includes(selectedLanguage)}
+            <button
+               class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shrink-0 justify-center whitespace-nowrap font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 flex items-center gap-2 text-sm shadow-none size-6 rounded-[calc(var(--radius)-5px)] p-0 has-[>svg]:p-0"
+               style="cursor: pointer;"
+               on:click={PreviewData}
+            >
+               <Presentation />
+            </button>
+         {/if}
       </InputGroup.Addon>
       <!-- <InputGroup.Textarea style="max-height:70vh"
          placeholder=""
