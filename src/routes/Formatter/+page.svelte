@@ -104,6 +104,15 @@
                   if (file) {
                      downloadFileName = file.name
                      downloadFileType = file.type
+                     if(downloadFileType == "text/plain"){
+                        selectedLanguage = listdata[0].value;
+                     }
+                     else{
+                        const result = listdata.find(obj => obj.mimetype == downloadFileType);
+                        if(result){
+                           selectedLanguage = result.value
+                        }
+                     }
                      const reader = new FileReader();
 
                      reader.onload = function (e1: any) {
