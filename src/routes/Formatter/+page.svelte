@@ -235,14 +235,16 @@
    }
 </script>
 
-<CommonHeader />
-<div
-   class="grid w-full"
-   style="height: 80vh;max-height: 80vh;"
-   bind:this={cardhtml}
->
-   <InputGroup.Root>
-      <InputGroup.Addon align="block-start" class="border-b">
+<div class="flex flex-col h-screen w-screen overflow-hidden">
+    <div class="shrink-0">
+        <CommonHeader />
+    </div>
+
+    <div class="flex-1 flex flex-col min-h-0 w-full" bind:this={cardhtml}>
+        
+        <InputGroup.Root class="flex flex-col flex-1 min-h-0">
+            
+            <InputGroup.Addon align="block-start" class="border-b">
          <InputGroup.Text class="font-mono font-medium">
             <!-- script.js -->
          </InputGroup.Text>
@@ -294,17 +296,13 @@
             </button>
          {/if}
       </InputGroup.Addon>
-      <!-- <InputGroup.Textarea style="max-height:70vh"
-         placeholder=""
-         class="editor-area"
-      /> -->
-      <div
-         bind:this={editorWrapper}
-         class="border rounded min-w-0 w-full h-full"
-         style=""
-      ></div>
 
-      <InputGroup.Addon align="block-end" class="border-t">
+            <div
+                bind:this={editorWrapper}
+                class="flex-1 min-h-0 w-full bg-background"
+                style="height: 100%; width: 100%;"
+            ></div>
+            <InputGroup.Addon align="block-end" class="border-t">
          <Label class="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950" style="height:45px">
             <Checkbox
             checked={wordWrap}
@@ -330,6 +328,8 @@
             Download <CornerDownLeftIcon />
          </button>
       </InputGroup.Addon>
-   </InputGroup.Root>
+            
+        </InputGroup.Root>
+    </div>
 </div>
 <input type="file" hidden on:input={(e)=>{filechange(e)}} id="editorfile"/>
