@@ -21,6 +21,7 @@
    selectedLanguage = listdata[0].value;
    const themes = ["vs-dark", "vs-light", "hc-black", "hc-light"];
    let wordWrap = false;
+   let minimap = false;
    let cardhtmlWidth: number = 0;
    let downloadFileName:string = ""
    let downloadFileType:string = ""
@@ -36,6 +37,17 @@
    $:if(!wordWrap){
       editor1?.updateOptions({
          wordWrap: 'off'
+      });
+   }
+   $:if(minimap){
+      editor1?.updateOptions({
+         minimap: { enabled: true }
+      });
+   }
+
+   $:if(!minimap){
+      editor1?.updateOptions({
+         minimap: { enabled: false }
       });
    }
 
@@ -312,6 +324,17 @@
             />
             <div class="grid font-normal">
                <p class="text-sm font-medium leading-none">Word Wrap</p>
+            </div>
+         </Label>
+         <Label class="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950" style="height:45px">
+            <Checkbox
+            checked={minimap}
+            onCheckedChange={()=>{minimap = !minimap}}
+               id="toggle-2"
+               class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+            />
+            <div class="grid font-normal">
+               <p class="text-sm font-medium leading-none">minimap</p>
             </div>
          </Label>
          <div class="grid gap-3">
